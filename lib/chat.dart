@@ -37,9 +37,7 @@ class ChatPage extends StatefulWidget {
               ),
               child: const Text('back to chat'),
               onPressed: () {
-                Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ChatPage()),);
+                Navigator.pop(context);
               },
             ),
           ],
