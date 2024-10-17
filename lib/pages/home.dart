@@ -21,8 +21,11 @@ class HomePage extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: const Text('Tell us about yourself', style: TextStyle(color: Color(0xFFFA643F), fontWeight: FontWeight.bold)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: const Text('Tell us about yourself',
+              style: TextStyle(
+                  color: Color(0xFFFA643F), fontWeight: FontWeight.bold)),
           content: const Text(
             'To personalize your experience, please select your user type:',
             style: TextStyle(color: Colors.black87),
@@ -44,7 +47,8 @@ class HomePage extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFFA643F),
           foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         ),
         child: Text(userType),
@@ -73,18 +77,18 @@ class HomePage extends StatelessWidget {
           },
         ),
         title: const Text(
-          'DormEatory', 
+          'DormEatory',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 24,
           ),
-        ), 
+        ),
       ),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('lib/assets/home.png'), 
+            image: AssetImage('lib/assets/home.png'),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
               Color.fromRGBO(0, 0, 0, 0.3),
@@ -155,18 +159,22 @@ class HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.facebook, color: Colors.blue, size: 30),
+                    icon: const Icon(Icons.facebook,
+                        color: Colors.blue, size: 30),
                     onPressed: () => _launchURL('https://www.facebook.com/'),
                   ),
                   const SizedBox(width: 20),
                   IconButton(
-                    icon: const Icon(Icons.tiktok, color: Colors.white, size: 30),
+                    icon:
+                        const Icon(Icons.tiktok, color: Colors.white, size: 30),
                     onPressed: () => _launchURL('https://www.tiktok.com/'),
                   ),
                   const SizedBox(width: 20),
                   IconButton(
-                    icon: const Icon(Icons.telegram, color: Colors.blue, size: 30),
-                    onPressed: () => _launchURL('https://www.youtube.com/watch?v=hPr-Yc92qaY'),
+                    icon: const Icon(Icons.telegram,
+                        color: Colors.blue, size: 30),
+                    onPressed: () => _launchURL(
+                        'https://www.youtube.com/watch?v=hPr-Yc92qaY'),
                   ),
                 ],
               ),
@@ -188,7 +196,8 @@ class HomePage extends StatelessWidget {
           backgroundColor: const Color(0xFFFA643F),
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           elevation: 5,
           textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           minimumSize: const Size(double.infinity, 60),

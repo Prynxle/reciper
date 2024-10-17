@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:xd/pages/home.dart';
 
 class Mobile extends StatefulWidget {
-  final List<String> messages;
+  final List<Map<String, String>> messages;
   final TextEditingController controller;
   final Function sendMessage;
   final Function dialogBuilder;
@@ -16,7 +16,6 @@ class Mobile extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _MobileState createState() => _MobileState();
 }
 
@@ -40,12 +39,14 @@ class _MobileState extends State<Mobile> {
     return Scaffold(
       backgroundColor: const Color(0xFF7A5C47),
       appBar: AppBar(
-        title: const Text('DormEATory Student Chat', style: TextStyle(color: Color(0xFFFF9D85))),
+        title: const Text('DormEATory Student Chat',
+            style: TextStyle(color: Color(0xFFFF9D85))),
         backgroundColor: const Color(0xFF331D0E),
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomePage()));
           },
           icon: const Icon(Icons.home, color: Color(0xFFFF9D85)),
         ),
@@ -62,8 +63,10 @@ class _MobileState extends State<Mobile> {
             reverse: true,
             itemCount: widget.messages.length,
             itemBuilder: (context, index) {
-              final isEven = index % 2 == 0;
-              return _buildMessageTile(widget.messages[widget.messages.length - 1 - index], isEven);
+              final message =
+                  widget.messages[widget.messages.length - 1 - index];
+              return _buildMessageTile(
+                  message['content']!, message['role'] == 'user');
             },
           ),
         ),
@@ -129,7 +132,7 @@ class _MobileState extends State<Mobile> {
             Expanded(
               child: TextField(
                 controller: widget.controller,
-                focusNode: _focusNode, 
+                focusNode: _focusNode,
                 decoration: InputDecoration(
                   hintText: 'Ask about your meal...',
                   hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
@@ -139,10 +142,12 @@ class _MobileState extends State<Mobile> {
                     borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 ),
                 style: const TextStyle(color: Colors.white),
-                onSubmitted: (_) => _onSendMessage(), // Call function to send message
+                onSubmitted: (_) =>
+                    _onSendMessage(), // Call function to send message
               ),
             ),
             const SizedBox(width: 8),
@@ -170,6 +175,6 @@ class _MobileState extends State<Mobile> {
   // Function to send the message and request focus on TextField
   void _onSendMessage() {
     widget.sendMessage();
-    _focusNode.requestFocus(); 
+    _focusNode.requestFocus();
   }
 }

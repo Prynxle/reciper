@@ -1,9 +1,10 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
-import 'package:xd/pages/home.dart'; 
+import 'package:xd/pages/home.dart';
 
-
-class Desktop extends StatelessWidget {
-  final List<String> messages;
+class Desktop extends StatefulWidget {
+  final List<Map<String, String>> messages;
   final TextEditingController controller;
   final Function sendMessage;
   final Function dialogBuilder;
@@ -17,116 +18,275 @@ class Desktop extends StatelessWidget {
   });
 
   @override
+  _DesktopLayoutState createState() => _DesktopLayoutState();
+}
+
+class _DesktopLayoutState extends State<Desktop> {
+  late FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF7A5C47),
       body: Row(
         children: [
-          NavigationRail(
-            backgroundColor: const Color(0xFF7A5C47),
-            extended: true,
-            selectedIndex: 0,
-            onDestinationSelected: (int index) {
-              if (index == 0) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const HomePage()));
-              }
-            },
-            destinations: const [
-              NavigationRailDestination(
-                icon: Icon(Icons.home, color: Colors.white),
-                label: Text('Home', style: TextStyle(color: Colors.white)),
-              ),
-            ],
+          _buildLeftSidebar(context),
+          Expanded(
+            flex: 3,
+            child: _buildChatArea(context),
           ),
-          Expanded(child: _buildChatContent(context)),
+          _buildRightSidebar(),
         ],
       ),
     );
   }
 
-  Widget _buildChatContent(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.all(10.0),
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: const Color(0xFFFF9D85),
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: const [
-            BoxShadow(
-              color: Color.fromARGB(66, 206, 192, 192),
-              blurRadius: 8.0,
-              offset: Offset(0, 4),
-            ),
-          ],
+  Widget _buildLeftSidebar(BuildContext context) {
+    return Container(
+      width: 250,
+      color: const Color(0xFF331D0E),
+      child: Column(
+        children: [
+          const SizedBox(height: 40),
+          const CircleAvatar(
+            radius: 40,
+            backgroundColor: Color(0xFFFA643F),
+            child: Icon(Icons.restaurant_menu, size: 40, color: Colors.white),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'DormEATory',
+            style: TextStyle(
+                color: Color(0xFFFF9D85),
+                fontSize: 24,
+                fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 40),
+          _buildSidebarButton('Home', Icons.home, () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomePage()));
+          }),
+          _buildSidebarButton('Chat', Icons.chat, () {}),
+          _buildSidebarButton('Settings', Icons.settings, () {}),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSidebarButton(
+      String label, IconData icon, VoidCallback onPressed) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: ElevatedButton.icon(
+        icon: Icon(icon, color: Colors.white),
+        label: Text(label),
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF7A5C47),
+          minimumSize: const Size(200, 50),
         ),
-        child: Column(
+      ),
+    );
+  }
+
+  Widget _buildChatArea(BuildContext context) {
+    return Column(
+      children: [
+        AppBar(
+          title: const Text('Student Chat',
+              style: TextStyle(color: Color(0xFFFF9D85))),
+          backgroundColor: const Color(0xFF331D0E),
+          elevation: 0,
+        ),
+        Expanded(
+          child: _buildChatMessages(),
+        ),
+        _buildInputArea(context),
+      ],
+    );
+  }
+
+  Widget _buildChatMessages() {
+    return ListView.builder(
+      reverse: true,
+      itemCount: widget.messages.length,
+      itemBuilder: (context, index) {
+        final message = widget.messages[widget.messages.length - 1 - index];
+        final isUser = message['role'] == 'user';
+        return _buildMessageTile(message['content']!, isUser);
+      },
+    );
+  }
+
+  Widget _buildMessageTile(String message, bool isUser) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      color: isUser ? const Color(0xFF7A5C47) : const Color(0xFF331D0E),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (!isUser) _buildAvatar(isUser),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  isUser ? 'You' : 'DormEATory',
+                  style: const TextStyle(
+                    color: Color(0xFFFF9D85),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  message,
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+          if (isUser) _buildAvatar(isUser),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAvatar(bool isUser) {
+    return CircleAvatar(
+      backgroundColor: const Color(0xFFFA643F),
+      radius: 16,
+      child: Icon(
+        isUser ? Icons.person : Icons.restaurant_menu,
+        size: 20,
+        color: Colors.white,
+      ),
+    );
+  }
+
+  Widget _buildInputArea(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: const Color(0xFF331D0E),
+      child: SafeArea(
+        child: Row(
           children: [
+            IconButton(
+              icon: const Icon(Icons.mic, color: Color(0xFFFF9D85)),
+              onPressed: () {
+                // Implement open mic functionality
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.attach_file, color: Color(0xFFFF9D85)),
+              onPressed: () {
+                // Implement file upload functionality
+              },
+            ),
             Expanded(
-              child: ListView.builder(
-                reverse: true,
-                itemCount: messages.length,
-                itemBuilder: (context, index) {
-                  return Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFA643F),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        messages[messages.length - 1 - index],
-                        style: const TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  );
-                },
+              child: TextField(
+                controller: widget.controller,
+                focusNode: _focusNode,
+                decoration: InputDecoration(
+                  hintText: 'Ask about your meal...',
+                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+                  filled: true,
+                  fillColor: const Color(0xFF7A5C47),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                ),
+                style: const TextStyle(color: Colors.white),
+                onSubmitted: (_) => _onSendMessage(),
               ),
             ),
-            SafeArea(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: controller,
-                      decoration: const InputDecoration(
-                        hintText: 'Say Hello, We will take care of everything',
-                        hintStyle: TextStyle(color: Colors.black54, backgroundColor: Color(0xFFFF9D85)),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black),
-                        ),
-                      ),
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    icon: const Icon(Icons.send),
-                    onPressed: () => sendMessage(),
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.mic),
-                    onPressed: () => dialogBuilder(context),
-                    color: Colors.black,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.photo),
-                    onPressed: () => dialogBuilder(context),
-                    color: Colors.black,
-                  ),
-                ],
-              ),
-            ),
+            const SizedBox(width: 8),
+            _buildSendButton(),
           ],
         ),
       ),
     );
   }
 
+  Widget _buildSendButton() {
+    return GestureDetector(
+      onTap: _onSendMessage,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFA643F),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: const Icon(Icons.send, color: Colors.white),
+      ),
+    );
+  }
+
+  void _onSendMessage() {
+    widget.sendMessage();
+    _focusNode.requestFocus();
+  }
+
+  Widget _buildRightSidebar() {
+    final questions = [
+      "What's on the menu today?",
+      "Are there any vegetarian options?",
+      "What are the dining hall hours?",
+      "Is there a meal plan available?",
+      "How can I report a food allergy?",
+    ];
+
+    return Container(
+      width: 300,
+      color: const Color(0xFF331D0E),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Suggested Questions',
+              style: TextStyle(
+                  color: Color(0xFFFF9D85),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: questions.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    questions[index],
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  onTap: () {
+                    widget.controller.text = questions[index];
+                    _onSendMessage();
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
