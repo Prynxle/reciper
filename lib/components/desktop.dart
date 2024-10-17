@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:xd/pages/home.dart';
@@ -42,18 +42,18 @@ class _DesktopLayoutState extends State<Desktop> {
       backgroundColor: const Color(0xFF7A5C47),
       body: Row(
         children: [
-          _buildLeftSidebar(context),
+          SideBar(context),
           Expanded(
             flex: 3,
-            child: _buildChatArea(context),
+            child: ChatLayout(context),
           ),
-          _buildRightSidebar(),
+          SuggestedQuestions(),
         ],
       ),
     );
   }
 
-  Widget _buildLeftSidebar(BuildContext context) {
+  Widget SideBar(BuildContext context) {
     return Container(
       width: 250,
       color: const Color(0xFF331D0E),
@@ -74,24 +74,30 @@ class _DesktopLayoutState extends State<Desktop> {
                 fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 40),
-          _buildSidebarButton('Home', Icons.home, () {
+          LeftSidebarButton('Home', Icons.home, () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const HomePage()));
           }),
-          _buildSidebarButton('Chat', Icons.chat, () {}),
-          _buildSidebarButton('Settings', Icons.settings, () {}),
+          LeftSidebarButton('Chat', Icons.chat, () {}),
+          LeftSidebarButton('Settings', Icons.settings, () {}),
         ],
       ),
     );
   }
 
-  Widget _buildSidebarButton(
+  Widget LeftSidebarButton(
       String label, IconData icon, VoidCallback onPressed) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ElevatedButton.icon(
-        icon: Icon(icon, color: Colors.white),
-        label: Text(label),
+        icon: Icon(
+          icon,
+          color: Colors.white,
+        ),
+        label: Text(
+          label,
+          style: const TextStyle(color: Colors.white),
+        ),
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF7A5C47),
@@ -101,43 +107,42 @@ class _DesktopLayoutState extends State<Desktop> {
     );
   }
 
-  Widget _buildChatArea(BuildContext context) {
+  Widget ChatLayout(BuildContext context) {
     return Column(
       children: [
         AppBar(
-          title: const Text('Student Chat',
-              style: TextStyle(color: Color(0xFFFF9D85))),
+          title: const Text('Chat', style: TextStyle(color: Color(0xFFFF9D85))),
           backgroundColor: const Color(0xFF331D0E),
           elevation: 0,
         ),
         Expanded(
-          child: _buildChatMessages(),
+          child: ChatMessages(),
         ),
-        _buildInputArea(context),
+        UserInput(context),
       ],
     );
   }
 
-  Widget _buildChatMessages() {
+  Widget ChatMessages() {
     return ListView.builder(
       reverse: true,
       itemCount: widget.messages.length,
       itemBuilder: (context, index) {
         final message = widget.messages[widget.messages.length - 1 - index];
         final isUser = message['role'] == 'user';
-        return _buildMessageTile(message['content']!, isUser);
+        return MessageTile(message['content']!, isUser);
       },
     );
   }
 
-  Widget _buildMessageTile(String message, bool isUser) {
+  Widget MessageTile(String message, bool isUser) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       color: isUser ? const Color(0xFF7A5C47) : const Color(0xFF331D0E),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (!isUser) _buildAvatar(isUser),
+          if (!isUser) UserIcon(isUser),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -159,13 +164,13 @@ class _DesktopLayoutState extends State<Desktop> {
               ],
             ),
           ),
-          if (isUser) _buildAvatar(isUser),
+          if (isUser) UserIcon(isUser),
         ],
       ),
     );
   }
 
-  Widget _buildAvatar(bool isUser) {
+  Widget UserIcon(bool isUser) {
     return CircleAvatar(
       backgroundColor: const Color(0xFFFA643F),
       radius: 16,
@@ -177,7 +182,7 @@ class _DesktopLayoutState extends State<Desktop> {
     );
   }
 
-  Widget _buildInputArea(BuildContext context) {
+  Widget UserInput(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       color: const Color(0xFF331D0E),
@@ -201,7 +206,7 @@ class _DesktopLayoutState extends State<Desktop> {
                 controller: widget.controller,
                 focusNode: _focusNode,
                 decoration: InputDecoration(
-                  hintText: 'Ask about your meal...',
+                  hintText: 'Message DormEatory',
                   hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
                   filled: true,
                   fillColor: const Color(0xFF7A5C47),
@@ -213,37 +218,36 @@ class _DesktopLayoutState extends State<Desktop> {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 ),
                 style: const TextStyle(color: Colors.white),
-                onSubmitted: (_) => _onSendMessage(),
+                onSubmitted: (_) => SendMessage(),
               ),
             ),
             const SizedBox(width: 8),
-            _buildSendButton(),
+            SendButton(),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSendButton() {
-    return GestureDetector(
-      onTap: _onSendMessage,
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: const Color(0xFFFA643F),
-          borderRadius: BorderRadius.circular(20),
-        ),
+  Widget SendButton() {
+    return SizedBox(
+      width: 50, // Specify the desired width
+      height: 50, // Specify the desired height
+      child: FloatingActionButton(
+        hoverColor: const Color.fromARGB(255, 248, 71, 26),
+        onPressed: SendMessage,
+        backgroundColor: const Color(0xFFFA643F),
         child: const Icon(Icons.send, color: Colors.white),
       ),
     );
   }
 
-  void _onSendMessage() {
+  void SendMessage() {
     widget.sendMessage();
     _focusNode.requestFocus();
   }
 
-  Widget _buildRightSidebar() {
+  Widget SuggestedQuestions() {
     final questions = [
       "What's on the menu today?",
       "Are there any vegetarian options?",
@@ -279,7 +283,7 @@ class _DesktopLayoutState extends State<Desktop> {
                   ),
                   onTap: () {
                     widget.controller.text = questions[index];
-                    _onSendMessage();
+                    SendMessage();
                   },
                 );
               },

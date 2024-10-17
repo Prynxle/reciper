@@ -159,7 +159,7 @@ class _TabletLayoutState extends State<Tablet> {
                 controller: widget.controller,
                 focusNode: _focusNode,
                 decoration: InputDecoration(
-                  hintText: 'Ask about your meal...',
+                  hintText: 'Message DormEatory',
                   hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
                   filled: true,
                   fillColor: const Color(0xFF7A5C47),
