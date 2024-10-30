@@ -1,6 +1,9 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:xd/pages/chat.dart';
-import 'package:url_launcher/url_launcher.dart'; // Add the url_launcher package
+import 'package:url_launcher/url_launcher.dart';
+import 'package:xd/pages/recommendations.dart'; // Add the url_launcher package
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -72,8 +75,7 @@ class HomePage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.restaurant_menu, color: Colors.white),
           onPressed: () {
-            // Add functionality for the menu button here
-            print('Restaurant menu button pressed');
+            print("You Pressed Restaurant Icon");
           },
         ),
         title: const Text(
@@ -149,8 +151,10 @@ class HomePage extends StatelessWidget {
                 'Food Recommendations',
                 Icons.restaurant,
                 () {
-                  // Add functionality for food recommendations here
-                  print('Food recommendations button pressed');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FoodRecommendation()),
+                );
                 },
               ),
               const SizedBox(height: 40),

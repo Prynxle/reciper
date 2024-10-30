@@ -57,6 +57,10 @@ flutter:
   uses-material-design: true
   assets:
     - lib/assets/home.png
+    - lib/assets/sinigang.jpg
+    - lib/assets/menudo.jpg
+    - lib/assets/Adobo.jpg
+    - lib/assets/kare-kare.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
