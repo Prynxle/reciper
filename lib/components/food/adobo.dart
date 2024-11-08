@@ -11,11 +11,14 @@ class AdoboPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.asset(
-              'lib/assets/adobo.jpg', // Add your image path
-              height: 300, // Set the image height
-              fit: BoxFit.cover,
-              width: double.infinity,
+            Hero(
+              tag: 'lib/assets/adobo.jpg',
+              child: Image.asset(
+                'lib/assets/adobo.jpg', // Add your image path
+                height: 300, // Set the image height
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
             ),
             Column(
   children: [
