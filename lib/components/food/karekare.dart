@@ -11,11 +11,14 @@ class KareKarePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.asset(
-              'lib/assets/kare-kare.jpg', // Update with your image path
-              height: 300,
-              fit: BoxFit.cover,
-              width: double.infinity,
+            Hero(
+              tag: 'lib/assets/kare-kare.jpg',
+              child: Image.asset(
+                'lib/assets/kare-kare.jpg', // Update with your image path
+                height: 300,
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
             ),
             Column(
   children: [
