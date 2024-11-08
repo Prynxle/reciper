@@ -51,31 +51,40 @@ class _HomePageState extends State<FoodRecommendation> {
             'lib/assets/kare-kare.jpg',
             const KareKarePage(),
           ),
+          Center(
+            child: Text(
+              "More soon to come",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black54,
+              ),
+            ),
+          ),
         ],
       ),
-appBar: AppBar(
-  backgroundColor: const Color.fromARGB(122, 92, 71, 1),
-  iconTheme: const IconThemeData(color: Colors.black),  // Set icon color for all icons in AppBar
-  leading: IconButton(
-    icon: const Icon(Icons.home),
-    onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
-    },
-  ),
-  title: const Center(
-    child: Text(
-      'Food Recommendation',
-      style: TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.w700, // Use FontWeight.w700 for bold text
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(122, 92, 71, 1),
+        iconTheme: const IconThemeData(color: Colors.black),  // Set icon color for all icons in AppBar
+        leading: IconButton(
+          icon: const Icon(Icons.home),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          },
+        ),
+        title: const Center(
+          child: Text(
+            'Food Recommendation',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w700, // Use FontWeight.w700 for bold text
+            ),
+          ),
+        ),
       ),
-    ),
-  ),
-),
-
     );
   }
 
@@ -87,18 +96,21 @@ appBar: AppBar(
           MaterialPageRoute(builder: (context) => page),
         );
       },
-      child: Container(
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        height: height,
-        width: width,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Image.asset(
-            imagePath,
-            fit: BoxFit.cover,
+      child: Hero(
+        tag: imagePath,
+        child: Container(
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          height: height,
+          width: width,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.asset(
+              imagePath,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),
