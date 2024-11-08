@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:xd/pages/chat.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -105,7 +103,7 @@ class HomePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'Welcome to DormEatory',
+                  'Welcome to ',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 32,
@@ -121,6 +119,17 @@ class HomePage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
+              const SizedBox(height: 20),
+              // Here you can insert the logo image below the welcome text
+              Padding(
+                 padding: const EdgeInsets.symmetric(horizontal: 40),
+                 child: Image.asset(
+                  'lib/assets/logo_colored_wobg.png', 
+                  height: 400, 
+                  fit: BoxFit.contain, 
+                  ),
+                  ),
+
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40),

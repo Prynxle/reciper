@@ -61,6 +61,8 @@ flutter:
     - lib/assets/menudo.jpg
     - lib/assets/Adobo.jpg
     - lib/assets/kare-kare.jpg
+    - lib/assets/logo_colored_wobg.png
+    - lib/assets/logo_bw_wobg.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
