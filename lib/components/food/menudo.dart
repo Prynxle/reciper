@@ -16,11 +16,14 @@ class MenudoPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.asset(
-              'lib/assets/menudo.jpg',
-              height: 300,
-              fit: BoxFit.cover,
-              width: double.infinity,
+            Hero(
+              tag: 'lib/assets/menudo.jpg',
+              child: Image.asset(
+                'lib/assets/menudo.jpg',
+                height: 300,
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
             ),
             Column(
   children: [
